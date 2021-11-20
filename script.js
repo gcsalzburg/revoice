@@ -32,9 +32,11 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 	// Attach button event listeners
 	const action_btn = document.querySelector(".action_button");
+	set_button_state('record');
 
 	action_btn.addEventListener("mousedown", (e) => {
 		e.preventDefault();
+		set_button_state('recording');
 
 		// Stop speaking
 		synthesis.pause();
@@ -47,6 +49,8 @@ document.addEventListener("DOMContentLoaded", () =>{
 	});
 	action_btn.addEventListener("mouseup", (e) => { // TODO: This should be mouseup on the whole block
 		e.preventDefault();
+		set_button_state('speaking');
+
 		// We call abort not error, so that the user hears the current status of the text box and we don't continue to update it as we improve on the translation
 		recognition.abort();
 		console.log(`Playing: ${document.querySelector(".speech_capture").innerHTML}`);
@@ -55,6 +59,28 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 
 });
+
+
+function set_button_state(state){
+	const action_btn = document.querySelector(".action_button");
+
+	action_btn.classList.remove('recording');
+	action_btn.classList.remove('speaking');
+
+	switch(state){
+		case 'record':
+			action_btn.innerHTML = 'Record';
+			break;
+		case 'recording':
+			action_btn.innerHTML = 'Recording';
+			action_btn.classList.add('recording');
+			break;
+		case 'speaking':
+			action_btn.innerHTML = 'Speaking';
+			action_btn.classList.add('speaking');
+			break;
+	}
+}
 
 // Speak the phrase
 function speak(playback_string){
@@ -65,10 +91,15 @@ function speak(playback_string){
 	}
 	if(playback_string !== ''){
 		let phrase = new SpeechSynthesisUtterance(playback_string);
+		phrase.onend = function (e) {
+			set_button_state('record');
+		}
 		// phrase.voice = voices[i];
 		// phrase.pitch = pitch.value;
 		// phrase.rate = rate.value;
 		synthesis.speak(phrase);
+	}else{
+		set_button_state('record');
 	}
 
 }

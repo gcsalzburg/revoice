@@ -72,10 +72,29 @@ p{
 	text-transform: uppercase;
 	font-weight: 600;
 	padding: 8px 12px;
-	background: rgb(255 80 80);
+	background: rgb(255, 102, 102);
 	color: white;
 	border-radius: 8px;
 	margin-top: 20px;
+}
+
+.action_button.recording{
+	animation: 0.9s ease-in-out recording infinite;
+}
+.action_button.recording::before{
+	content: '● ';
+}
+.action_button.speaking{
+	background: rgb(21, 158, 9);
+}
+.action_button.speaking::before{
+	content: '⏵ ';
+}
+
+@keyframes recording{
+	0%{background: rgb(255, 102, 102);}
+	50%{background: rgb(223, 0, 0);}
+	100%{background: rgb(255, 102, 102);}
 }
 
 
