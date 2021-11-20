@@ -54,6 +54,15 @@ p{
 	font-weight: 300;
 	font-size: 1.2em;
 }
+p em{
+	font-style: normal;
+	display: inline-block;
+	background: rgba(255, 102, 102, 0.2);
+	border-radius: 6px;
+	padding: 0.2em 0.5em;
+	font-size: 0.8em;
+	font-weight: 500;
+}
 
 .speech{
 	font-weight: 300;
@@ -65,17 +74,36 @@ p{
 	height: calc(5 * 1.6em);
 	padding: 8px;
 }
-.action_button{
-	display: inline-block;
-	margin: 0 auto;
+
+.buttons{
+	display: flex;
+	margin: 20px 0 0 0;
+	justify-content: center;
+}
+.buttons > *{
+	display: block;
 	text-decoration: none;
 	text-transform: uppercase;
 	font-weight: 600;
-	padding: 8px 12px;
-	background: rgb(255, 102, 102);
+	padding: 0.5em 1em;
 	color: white;
 	border-radius: 8px;
-	margin-top: 20px;
+	margin: 0 5px;
+}
+.action_button{
+	background: rgb(255, 102, 102);
+}
+.action_button:hover{
+	background: rgb(223, 0, 0);
+}
+.options_button{
+	background: rgb(171, 168, 168);
+	font-size: 0.8em;
+	align-self: center;
+	padding: 0.3em 0.8em;
+}
+.options_button:hover{
+	background: rgb(102, 101, 101);
 }
 
 .action_button.recording{
@@ -97,6 +125,28 @@ p{
 	100%{background: rgb(255, 102, 102);}
 }
 
+.options{
+	display: none;
+}
+.options.buttons > a{
+	font-size: 0.8em;
+	padding: 0.3em 0.8em;
+	background: rgb(212, 212, 212);
+	color: black;
+	font-weight: 400;
+	text-transform: none;
+}
+.options.buttons > a:hover{
+	background: rgb(150, 148, 148);
+}
+.options.buttons > a.selected{
+	background:rgb(102, 101, 101);
+	color:white;
+}
+
+.options.show_options{
+	display: flex;
+}
 
 
 

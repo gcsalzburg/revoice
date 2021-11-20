@@ -1,7 +1,17 @@
+'use strict';
 
 // Speech recognition & synthesis objects
 const recognition = new webkitSpeechRecognition();
 const synthesis = window.speechSynthesis;
+
+// Data object for voice properties
+const voice_data = {
+	voice_name: "Google UK English Female",
+	voice: null,
+	pitch: 1,
+	rate: 1
+};
+let voices = null;
 
 document.addEventListener("DOMContentLoaded", () =>{
 
@@ -9,6 +19,15 @@ document.addEventListener("DOMContentLoaded", () =>{
 	if('webkitSpeechRecognition' in window){
 		// if('SpeechRecognition' in window || 'webkitSpeechRecognition' in window){
 		document.querySelector('.speechrecognition_warning').style.display = 'none';
+	}
+	
+	// Fetch list of speech synthesis voices
+	if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+		speechSynthesis.onvoiceschanged = () => {
+			voices = synthesis.getVoices();
+			console.log(voices);
+			set_voice(voice_data.voice_name);
+		};
 	}
 
 	// Prep speech recognition
@@ -29,6 +48,19 @@ document.addEventListener("DOMContentLoaded", () =>{
 	setTimeout(() => {
 		recognition.abort();
 	}, 5);
+
+	document.querySelector(".options_button").addEventListener("click", (e) => {
+		e.preventDefault();
+		document.querySelector(".options").classList.toggle("show_options");
+	});
+	document.querySelector(".options").addEventListener("click", (e) => {
+		e.preventDefault();
+		if(e.target.dataset.voiceName != undefined){
+			set_voice(e.target.dataset.voiceName);
+			document.querySelectorAll(".options a").forEach(btn => btn.classList.remove("selected"));
+			e.target.classList.add("selected");
+		}
+	});
 
 	// Attach button event listeners
 	const action_btn = document.querySelector(".action_button");
@@ -60,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 });
 
-
+// Set the display of the action button
 function set_button_state(state){
 	const action_btn = document.querySelector(".action_button");
 
@@ -85,111 +117,40 @@ function set_button_state(state){
 // Speak the phrase
 function speak(playback_string){
 
+	// Quick error checks
 	if(synthesis.speaking){
 		console.error('speechSynthesis.speaking');
 		return;
 	}
-	if(playback_string !== ''){
-		let phrase = new SpeechSynthesisUtterance(playback_string);
-		phrase.onend = function (e) {
-			set_button_state('record');
-		}
-		// phrase.voice = voices[i];
-		// phrase.pitch = pitch.value;
-		// phrase.rate = rate.value;
-		synthesis.speak(phrase);
-	}else{
+	if(playback_string == ''){
+		set_button_state('record');
+		return;
+	}
+
+	// Create new phrase
+	let phrase = new SpeechSynthesisUtterance(playback_string);
+	
+	// Set button state when it finishes
+	phrase.onend = function (e) {
 		set_button_state('record');
 	}
 
+	// Set properties of voice
+	phrase.voice = voice_data.voice;
+	phrase.pitch = voice_data.pitch;
+	phrase.rate = voice_data.rate;
+
+	// Speak!
+	synthesis.speak(phrase);
 }
 
-
-
-/*
-
-	let inputForm = document.querySelector('form');
-	let inputTxt = document.querySelector('.txt');
-	let voiceSelect = document.querySelector('select');
-	
-	let pitch = document.querySelector('#pitch');
-	let pitchValue = document.querySelector('.pitch-value');
-	let rate = document.querySelector('#rate');
-	let rateValue = document.querySelector('.rate-value');
-
-let voices = [];
-
-function populateVoiceList() {
-  voices = synth.getVoices().sort(function (a, b) {
-      const aname = a.name.toUpperCase(), bname = b.name.toUpperCase();
-      if ( aname < bname ) return -1;
-      else if ( aname == bname ) return 0;
-      else return +1;
-  });
-  var selectedIndex = voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex;
-  voiceSelect.innerHTML = '';
-  for(i = 0; i < voices.length ; i++) {
-    var option = document.createElement('option');
-    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-    
-    if(voices[i].default) {
-      option.textContent += ' -- DEFAULT';
-    }
-
-    option.setAttribute('data-lang', voices[i].lang);
-    option.setAttribute('data-name', voices[i].name);
-    voiceSelect.appendChild(option);
-  }
-  voiceSelect.selectedIndex = selectedIndex;
+// Set the voice we will use
+function set_voice(voice_name){
+	for(let i=0; i<voices.length; i++) {
+		if(voices[i].name === voice_name) {
+			voice_data.voice_name = voice_name;
+			voice_data.voice = voices[i];
+			break;
+		}
+	}
 }
-
-populateVoiceList();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = populateVoiceList;
-}
-
-function speak(){
-    if (synth.speaking) {
-        console.error('speechSynthesis.speaking');
-        return;
-    }
-    if (inputTxt.value !== '') {
-    var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
-    utterThis.onend = function (event) {
-        console.log('SpeechSynthesisUtterance.onend');
-    }
-    utterThis.onerror = function (event) {
-        console.error('SpeechSynthesisUtterance.onerror');
-    }
-    var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-    for(i = 0; i < voices.length ; i++) {
-      if(voices[i].name === selectedOption) {
-        utterThis.voice = voices[i];
-        break;
-      }
-    }
-    utterThis.pitch = pitch.value;
-    utterThis.rate = rate.value;
-    synth.speak(utterThis);
-  }
-}
-
-inputForm.onsubmit = function(event) {
-  event.preventDefault();
-
-  speak();
-
-  inputTxt.blur();
-}
-
-pitch.onchange = function() {
-  pitchValue.textContent = pitch.value;
-}
-
-rate.onchange = function() {
-  rateValue.textContent = rate.value;
-}
-
-voiceSelect.onchange = function(){
-  speak();
-}*/

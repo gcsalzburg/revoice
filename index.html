@@ -15,33 +15,30 @@
 		<main>
 			<h1>Revoice 📣</h1>
 
-			<p>Hold button to capture voice. Release to playback.</p>
+			<p>Hold <em>RECORD</em> button to capture voice. Release to playback.</p>
 
-			<div class="speech"><span class="speech_capture">Test string...</span></div>
+			<div class="speech"><span class="speech_capture"></span></div>
 
-			<a href="#playback" class="action_button">Record</a>
+			<div class="buttons">
+				<a href="#playback" class="action_button">Record</a>
+				<a href="#options" class="options_button">⚙ Options</a>
+			</div>
+
+			<div class="options buttons">
+				<a href="#voice" class="selected" data-voice-name="Google UK English Female">UK Female</a>
+				<a href="#voice" data-voice-name="Google UK English Male">UK Male</a>
+				<a href="#voice" data-voice-name="Google US English">USA</a>
+				<a href="#voice" data-voice-name="Google français">FR</a>
+				<a href="#voice" data-voice-name="Google русский">RU</a>
+
+				<!--
+				<label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
+				<div class="rate-value">1</div>
+				<label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
+				<div class="pitch-value">1</div>
+				-->
+			</div>
 		</main>
-    <!--
-    <form>
-    <input type="text" class="txt">
-    <div>
-      <label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
-      <div class="rate-value">1</div>
-      <div class="clearfix"></div>
-    </div>
-    <div>
-      <label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
-      <div class="pitch-value">1</div>
-      <div class="clearfix"></div>
-    </div>
-    <select>
-
-    </select>
-    <div class="controls">
-      <button id="play" type="submit">Play</button>
-    </div>
-    </form>
--->
-    <script src="script.js"></script>
-  </body>
+	<script src="script.js"></script>
+  	</body>
 </html>
