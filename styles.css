@@ -1,22 +1,88 @@
-body, html {
-	margin: 0;
- }
- 
- html {
+html {
 	height: 100%;
- }
- 
- body {
-	height: 90%;
-	max-width: 800px;
-	margin: 0 auto;
- }
- 
- h1, p {
-	font-family: sans-serif;
+	margin: 0;
+}
+
+body{
+	margin: 0;
+	height: 100%;
+	font-family: 'Poppins', sans-serif;
+	background: rgb(218, 236, 134);
+	color: black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.speechrecognition_warning{
+	position: absolute;
+	top:0;
+	left:0;
+	background:rgb(220, 43, 12);
+	color: white;
+	right:0;
+	padding: 15px;
+	font-weight: 300;
+}
+.speechrecognition_warning strong{
+	font-weight: 500;
+}
+.speechrecognition_warning::before{
+	content: '⚠️ ';
+}
+
+main{
+	background: white;
+	padding: 30px;
+	border-radius: 35px;
+	width: 70%;
+	border: 15px solid rgba(218,236,134,0.5);
+	display: flex;
+	flex-direction: column;
+	max-width: 1100px;
+}
+
+h1{
 	text-align: center;
-	padding: 20px;
- }
+	text-transform: lowercase;
+	font-weight: 400;
+	font-size: 2.4em;
+}
+
+p{
+	text-align: center;
+	font-weight: 300;
+	font-size: 1.2em;
+}
+
+.speech{
+	font-weight: 300;
+	font-size: 1.2em;
+	width: 85%;
+	margin: 0 auto;
+	background: rgba(0,0,0,0.05);
+	line-height: 1.6em;
+	height: calc(5 * 1.6em);
+	padding: 8px;
+}
+.action_button{
+	display: inline-block;
+	margin: 0 auto;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: 600;
+	padding: 8px 12px;
+	background: rgb(255 80 80);
+	color: white;
+	border-radius: 8px;
+	margin-top: 20px;
+}
+
+
+
+
+
+/*
  
  .txt, select, form > div {
 	display: block;
@@ -71,4 +137,4 @@ body, html {
  
  .controls button {
 	padding: 10px;
- }
+ }*/

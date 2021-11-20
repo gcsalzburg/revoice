@@ -3,14 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Revoice</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet"> 
 		<link rel="stylesheet" href="styles.css">
 	</head>
 
-  <body>
-    <h1>Speech synthesiser</h1>
+	<body>
+		<div class="speechrecognition_warning"><strong>webkitSpeechRecognition()</strong> is not supported in this browser. Please try again using Google Chrome.
+		</div>
+		<main>
+			<h1>Revoice 📣</h1>
 
-    <p>Enter some text in the input below and press return  or the "play" button to hear it. change voices using the dropdown menu.</p>
-    
+			<p>Hold button to capture voice. Release to playback.</p>
+
+			<div class="speech"><span class="speech_capture">Test string...</span></div>
+
+			<a href="#playback" class="action_button">Record</a>
+		</main>
+    <!--
     <form>
     <input type="text" class="txt">
     <div>
@@ -30,7 +41,7 @@
       <button id="play" type="submit">Play</button>
     </div>
     </form>
-
+-->
     <script src="script.js"></script>
   </body>
 </html>

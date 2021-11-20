@@ -1,50 +1,90 @@
 
-// new instance of speech recognition
-var recognition = new webkitSpeechRecognition();
-// set params
-recognition.continuous = true;
-recognition.interimResults = true;
-recognition.start();
+// Speech recognition & synthesis objects
+const recognition = new webkitSpeechRecognition();
+const synthesis = window.speechSynthesis;
 
-recognition.onresult = function(event){
-  
-	// delve into words detected results & get the latest
-	// total results detected
-	let str = "";
-	for(let i=0; i<event.results.length; i++){
-		console.log(event.results[i][0].transcript);
-		str += event.results[i][0].transcript;
-		str += ' ';
+document.addEventListener("DOMContentLoaded", () =>{
+
+	// Feature detection
+	if('webkitSpeechRecognition' in window){
+		// if('SpeechRecognition' in window || 'webkitSpeechRecognition' in window){
+		document.querySelector('.speechrecognition_warning').style.display = 'none';
 	}
-	document.querySelector(".txt").value = str;
+
+	// Prep speech recognition
+	recognition.continuous = true;
+	recognition.interimResults = true;
+	recognition.onresult = function(event){
+		// Create string from last available phrase
+		let str = "";
+		for(let i=0; i<event.results.length; i++){
+			str += event.results[i][0].transcript;
+			str += ' ';
+		}
+		document.querySelector(".speech_capture").innerHTML = str;
+	}
+
+	// Request access to microphone on page load
+	recognition.start();
+	setTimeout(() => {
+		recognition.abort();
+	}, 5);
+
+	// Attach button event listeners
+	const action_btn = document.querySelector(".action_button");
+
+	action_btn.addEventListener("mousedown", (e) => {
+		e.preventDefault();
+
+		// Stop speaking
+		synthesis.pause();
+		synthesis.cancel();
+
+		// ⚠ Important
+		// If webpage not running under https://, this will ask for permission every time it is called!
+		document.querySelector(".speech_capture").innerHTML = "";
+		recognition.start();
+	});
+	action_btn.addEventListener("mouseup", (e) => { // TODO: This should be mouseup on the whole block
+		e.preventDefault();
+		// We call abort not error, so that the user hears the current status of the text box and we don't continue to update it as we improve on the translation
+		recognition.abort();
+		console.log(`Playing: ${document.querySelector(".speech_capture").innerHTML}`);
+		speak(document.querySelector(".speech_capture").innerHTML);
+	});
+
+
+});
+
+// Speak the phrase
+function speak(playback_string){
+
+	if(synthesis.speaking){
+		console.error('speechSynthesis.speaking');
+		return;
+	}
+	if(playback_string !== ''){
+		let phrase = new SpeechSynthesisUtterance(playback_string);
+		// phrase.voice = voices[i];
+		// phrase.pitch = pitch.value;
+		// phrase.rate = rate.value;
+		synthesis.speak(phrase);
+	}
+
 }
 
-// speech error handling
-recognition.onerror = function(event){
-  console.log(`Error: `);
-  console.log(event);
-}
 
 
+/*
 
-
-
-
-
-
-
-
-
-let synth = window.speechSynthesis;
-
-let inputForm = document.querySelector('form');
-let inputTxt = document.querySelector('.txt');
-let voiceSelect = document.querySelector('select');
-
-let pitch = document.querySelector('#pitch');
-let pitchValue = document.querySelector('.pitch-value');
-let rate = document.querySelector('#rate');
-let rateValue = document.querySelector('.rate-value');
+	let inputForm = document.querySelector('form');
+	let inputTxt = document.querySelector('.txt');
+	let voiceSelect = document.querySelector('select');
+	
+	let pitch = document.querySelector('#pitch');
+	let pitchValue = document.querySelector('.pitch-value');
+	let rate = document.querySelector('#rate');
+	let rateValue = document.querySelector('.rate-value');
 
 let voices = [];
 
@@ -121,4 +161,4 @@ rate.onchange = function() {
 
 voiceSelect.onchange = function(){
   speak();
-}
+}*/
