@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 			set_voice(e.target.dataset.voiceName);
 			document.querySelectorAll(".options a").forEach(btn => btn.classList.remove("selected"));
 			e.target.classList.add("selected");
+			speak(document.querySelector(".speech_capture").innerHTML);
 		}
 	});
 	document.querySelectorAll(`input[type="range"]`).forEach(slider => {
@@ -71,14 +72,13 @@ document.addEventListener("DOMContentLoaded", () =>{
 			// When change finally confirmed
 			voice_data[slider.dataset.voiceProperty] = slider.value;
 			document.querySelector(`#${slider.dataset.valueId}`).innerHTML = slider.value;
-
+			speak(document.querySelector(".speech_capture").innerHTML);
 		});
 	});
 
-	// Attach button event listeners
-	const action_btn = document.querySelector(".action_button");
+	// RECORD button event listeners
 	set_button_state('record');
-
+	const action_btn = document.querySelector(".action_button");
 	action_btn.addEventListener("mousedown", (e) => {
 		e.preventDefault();
 		set_button_state('recording');
@@ -94,11 +94,11 @@ document.addEventListener("DOMContentLoaded", () =>{
 	});
 	action_btn.addEventListener("mouseup", (e) => { // TODO: This should be mouseup on the whole block
 		e.preventDefault();
-		set_button_state('speaking');
 
 		// We call abort not error, so that the user hears the current status of the text box and we don't continue to update it as we improve on the translation
 		recognition.abort();
-		console.log(`Playing: ${document.querySelector(".speech_capture").innerHTML}`);
+
+		// Now speak!
 		speak(document.querySelector(".speech_capture").innerHTML);
 	});
 
@@ -130,15 +130,21 @@ function set_button_state(state){
 // Speak the phrase
 function speak(playback_string){
 
-	// Quick error checks
-	if(synthesis.speaking){
-		console.error('speechSynthesis.speaking');
-		return;
-	}
+	// Stop if no string present
 	if(playback_string == ''){
 		set_button_state('record');
 		return;
 	}
+
+	// If already playing, stop!
+	if(synthesis.speaking){
+		synthesis.pause();
+		synthesis.cancel();
+	}
+
+	// UI change for speaking
+	set_button_state('speaking');
+	console.log(`Playing: ${playback_string}`);
 
 	// Create new phrase
 	let phrase = new SpeechSynthesisUtterance(playback_string);
