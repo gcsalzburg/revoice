@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 		recognition.abort();
 	}, 5);
 
+	// Events for options buttons and sliders
 	document.querySelector(".options_button").addEventListener("click", (e) => {
 		e.preventDefault();
 		document.querySelector(".options").classList.toggle("show_options");
@@ -60,6 +61,18 @@ document.addEventListener("DOMContentLoaded", () =>{
 			document.querySelectorAll(".options a").forEach(btn => btn.classList.remove("selected"));
 			e.target.classList.add("selected");
 		}
+	});
+	document.querySelectorAll(`input[type="range"]`).forEach(slider => {
+		slider.addEventListener("input",(e) => {
+			// Update whilst dragging
+			document.querySelector(`#${slider.dataset.valueId}`).innerHTML = slider.value;
+		});
+		slider.addEventListener("change", (e) => {
+			// When change finally confirmed
+			voice_data[slider.dataset.voiceProperty] = slider.value;
+			document.querySelector(`#${slider.dataset.valueId}`).innerHTML = slider.value;
+
+		});
 	});
 
 	// Attach button event listeners

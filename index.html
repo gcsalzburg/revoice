@@ -25,18 +25,46 @@
 			</div>
 
 			<div class="options buttons">
-				<a href="#voice" class="selected" data-voice-name="Google UK English Female">UK Female</a>
-				<a href="#voice" data-voice-name="Google UK English Male">UK Male</a>
-				<a href="#voice" data-voice-name="Google US English">USA</a>
-				<a href="#voice" data-voice-name="Google français">FR</a>
-				<a href="#voice" data-voice-name="Google русский">RU</a>
-
-				<!--
-				<label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
-				<div class="rate-value">1</div>
-				<label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
-				<div class="pitch-value">1</div>
-				-->
+				<div class="options_buttons_list">
+					<a href="#voice" class="selected" data-voice-name="Google UK English Female">UK Female</a>
+					<a href="#voice" data-voice-name="Google UK English Male">UK Male</a>
+					<a href="#voice" data-voice-name="Google US English">USA</a>
+					<a href="#voice" data-voice-name="Google français">FR</a>
+					<a href="#voice" data-voice-name="Google русский">RU</a>
+				</div>
+				<div class="range rate">
+					<label for="rate">Rate</label>
+					<input type="range" min="0.6" max="2" value="1" step="0.1" list="tickmarks-rate" data-voice-property="rate" data-value-id="rate-value">
+					<datalist id="tickmarks-rate">
+						<option value="0.6"></option>
+						<option value="0.8"></option>
+						<option value="1.0"></option>
+						<option value="1.2"></option>
+						<option value="1.4"></option>
+						<option value="1.6"></option>
+						<option value="1.8"></option>
+						<option value="2.0"></option>
+					 </datalist>
+					<span id="rate-value" class="value">1</span>
+				</div>
+				<div class="range pitch">
+					<label for="pitch">Pitch</label>
+					<input type="range" min="0" max="2" value="1" step="0.1" list="tickmarks-pitch" data-voice-property="pitch" data-value-id="pitch-value">
+					<datalist id="tickmarks-pitch">
+						<option value="0.0"></option>
+						<option value="0.2"></option>
+						<option value="0.4"></option>
+						<option value="0.6"></option>
+						<option value="0.8"></option>
+						<option value="1.0"></option>
+						<option value="1.2"></option>
+						<option value="1.4"></option>
+						<option value="1.6"></option>
+						<option value="1.8"></option>
+						<option value="2.0"></option>
+					 </datalist>
+					<span id="pitch-value" class="value">1</span>
+				</div>
 			</div>
 		</main>
 	<script src="script.js"></script>
